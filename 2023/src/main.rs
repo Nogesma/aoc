@@ -2,9 +2,6 @@ use aoc::generate_days;
 use std::iter::Iterator;
 use std::{env, fs};
 
-mod day01;
-mod day02;
-
 fn run<F: Fn(String) -> (String, String)>(idx: &str, func: F) {
     use std::time::Instant;
 
@@ -19,12 +16,12 @@ fn run<F: Fn(String) -> (String, String)>(idx: &str, func: F) {
     println!("Execution time: {:?}", elapsed);
 }
 
-generate_days! {2}
+generate_days!(3);
 
 fn main() -> Result<(), String> {
     let idx = env::args().nth(1).ok_or("Missing day argument")?;
 
-    run(&idx, get_day_fn(&idx));
+    run_day(&idx);
 
     Ok(())
 }
