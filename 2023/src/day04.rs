@@ -1,6 +1,8 @@
-fn parse_input(input: String) -> Vec<(Vec<usize>, Vec<usize>)> {
-    let lines = input.split('\n').filter(|l| !l.is_empty());
-    lines
+use crate::{Input, Output};
+
+fn parse_input(input: Input) -> Vec<(Vec<usize>, Vec<usize>)> {
+    input
+        .lines()
         .map(|line| {
             let (_, numbers) = line.split_once(':').unwrap();
             let (winning, numbers) = numbers.split_once('|').unwrap();
@@ -35,7 +37,7 @@ fn get_matches(matches: &[usize], cards: &mut [Option<usize>], idx: usize) -> us
     res
 }
 
-pub fn main(input: String) -> (String, String) {
+pub fn main(input: Input) -> Output<usize, usize> {
     let cards = parse_input(input);
 
     let matches = cards
@@ -46,15 +48,13 @@ pub fn main(input: String) -> (String, String) {
     let first = matches
         .iter()
         .map(|&v| if v > 0 { 1 << (v - 1) } else { 0 })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
     let mut ncards = vec![None; cards.len()];
 
     let second = (0..cards.len())
         .map(|i| get_matches(&matches, &mut ncards, i) + 1)
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    (first, second)
+    Output(first, second)
 }

@@ -1,14 +1,20 @@
+use crate::{Input, Output};
 use std::cmp::max;
 
-pub fn main(input: String) -> (String, String) {
-    let lines = input.split('\n').filter(|l| !l.is_empty());
-    let first = lines
-        .clone()
+pub fn main(input: Input) -> Output<usize, usize> {
+    let games = input
+        .lines()
         .map(|line| {
             let (game, draws) = line.split_once(':').unwrap();
-            let mut draws = draws.split(';');
+            (game, draws.split(';'))
+        })
+        .collect::<Vec<_>>();
 
+    let first = games
+        .iter()
+        .map(|(game, draws)| {
             if draws
+                .clone()
                 .try_for_each(|d| {
                     d.split(',').try_for_each(|color| {
                         let (v, name) = color.trim().split_once(' ').unwrap();
@@ -42,15 +48,11 @@ pub fn main(input: String) -> (String, String) {
                 0
             }
         })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    let second = lines
-        .clone()
-        .map(|line| {
-            let (_, draws) = line.split_once(':').unwrap();
-            let draws = draws.split(';');
-
+    let second = games
+        .into_iter()
+        .map(|(_, draws)| {
             let min = draws
                 .map(|d| {
                     let mut n = (0, 0, 0);
@@ -70,8 +72,7 @@ pub fn main(input: String) -> (String, String) {
 
             min.0 * min.1 * min.2
         })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    (first, second)
+    Output(first, second)
 }

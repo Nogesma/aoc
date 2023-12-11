@@ -1,7 +1,8 @@
+use crate::{Input, Output};
 use std::cmp::Ordering;
 
-fn parse_input(input: String) -> (Vec<(usize, usize)>, (usize, usize)) {
-    let (times, distances) = input.split_once('\n').unwrap();
+fn parse_input(input: Input) -> (Vec<(usize, usize)>, (usize, usize)) {
+    let (times, distances) = input.0.split_once('\n').unwrap();
 
     let (_, times) = times.trim().split_once(':').unwrap();
     let (_, distances) = distances.trim().split_once(':').unwrap();
@@ -47,17 +48,16 @@ fn count_wins((time, distance): &(usize, usize)) -> usize {
     }
 }
 
-pub fn main(input: String) -> (String, String) {
+pub fn main(input: Input) -> Output<usize, usize> {
     let (races, final_race) = parse_input(input);
 
     let first = races
         .iter()
         .map(count_wins)
         .reduce(|acc, v| acc * v)
-        .unwrap()
-        .to_string();
+        .unwrap();
 
-    let second = count_wins(&final_race).to_string();
+    let second = count_wins(&final_race);
 
-    (first, second)
+    Output(first, second)
 }

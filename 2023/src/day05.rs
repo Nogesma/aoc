@@ -1,8 +1,10 @@
+use crate::{Input, Output};
+
 type Seeds = Vec<usize>;
 type Map = Vec<(usize, usize, usize)>;
 
-fn parse_input(input: String) -> (Seeds, Vec<Map>) {
-    let mut blocks = input.split("\n\n").filter(|l| !l.is_empty());
+fn parse_input(input: Input) -> (Seeds, Vec<Map>) {
+    let mut blocks = input.0.split("\n\n").filter(|l| !l.is_empty());
     let seeds = blocks
         .next()
         .unwrap()
@@ -64,15 +66,14 @@ fn get_location(seed: usize, maps: &[Vec<(usize, usize, usize)>]) -> (usize, usi
     (seed, range)
 }
 
-pub fn main(input: String) -> (String, String) {
+pub fn main(input: Input) -> Output<usize, usize> {
     let (seeds, maps) = parse_input(input);
 
     let first = seeds
         .iter()
         .map(|&s| get_location(s, &maps).0)
         .min()
-        .unwrap()
-        .to_string();
+        .unwrap();
 
     let second = seeds
         .chunks_exact(2)
@@ -93,8 +94,7 @@ pub fn main(input: String) -> (String, String) {
             }
         })
         .min()
-        .unwrap()
-        .to_string();
+        .unwrap();
 
-    (first, second)
+    Output(first, second)
 }

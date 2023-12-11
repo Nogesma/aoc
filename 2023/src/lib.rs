@@ -1,3 +1,5 @@
+// mod day10;
+
 use proc_macro::TokenStream;
 use syn::{parse_macro_input, LitInt};
 #[proc_macro]
@@ -14,7 +16,7 @@ pub fn generate_days(input: TokenStream) -> TokenStream {
         match_function += format!("\"day{i:02}\" => run(idx, day{i:02}::main),").as_str();
         all.push(format!("day{i:02}"));
     }
-    match_function += format!("all => {{{all:?}.iter().for_each(|x| run_day(x));}},").as_str();
+    match_function += format!("\"all\" => {{{all:?}.iter().for_each(|x| run_day(x));}},").as_str();
     match_function += "_ => panic!(\"Invalid day: {idx}\")}}";
 
     (imports + &match_function).parse().unwrap()

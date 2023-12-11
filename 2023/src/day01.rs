@@ -1,3 +1,5 @@
+use crate::{Input, Output};
+
 fn find(line: &[u8], range: impl Iterator<Item = usize>) -> u8 {
     for i in range {
         if line[i].is_ascii_digit() {
@@ -19,20 +21,19 @@ fn find(line: &[u8], range: impl Iterator<Item = usize>) -> u8 {
     panic!("No number in line: {}", std::str::from_utf8(line).unwrap());
 }
 
-pub fn main(input: String) -> (String, String) {
-    let lines = input.split('\n').filter(|l| !l.is_empty());
-    let first = lines
-        .clone()
+pub fn main(input: Input) -> Output<usize, usize> {
+    let first = input
+        .lines()
         .map(|line| {
             let mut chars = line.chars();
             let first = chars.clone().find(|c: &char| c.is_ascii_digit()).unwrap();
             let last = chars.rfind(|c: &char| c.is_ascii_digit()).unwrap();
             format!("{first}{last}").parse::<usize>().unwrap()
         })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    let second = lines
+    let second = input
+        .lines()
         .map(|line| {
             let line = line.as_bytes();
             let first = find(line, 0..line.len());
@@ -40,8 +41,7 @@ pub fn main(input: String) -> (String, String) {
 
             format!("{first}{last}").parse::<usize>().unwrap()
         })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    (first, second)
+    Output(first, second)
 }

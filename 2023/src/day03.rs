@@ -1,3 +1,4 @@
+use crate::{Input, Output};
 use std::collections::HashSet;
 
 #[derive(Copy, Clone, Hash, Eq, PartialEq, Debug)]
@@ -14,9 +15,9 @@ fn parse_slice(n: &[u8]) -> usize {
     String::from_utf8_lossy(n).parse::<usize>().unwrap()
 }
 
-fn parse_input(input: String) -> Vec<Vec<u8>> {
-    let lines = input.split('\n').filter(|l| !l.is_empty());
-    let mut grid = lines
+fn parse_input(input: Input) -> Vec<Vec<u8>> {
+    let mut grid = input
+        .lines()
         .map(|line| format!(".{line}.").into_bytes())
         .collect::<Vec<_>>();
 
@@ -82,11 +83,11 @@ fn parse_grid(grid: &[Vec<u8>]) -> (NumberMap, SymbolMap) {
     (numbers, symbols)
 }
 
-pub fn main(input: String) -> (String, String) {
+pub fn main(input: Input) -> Output<usize, usize> {
     let grid = parse_input(input);
     let (number, symbol) = parse_grid(&grid);
 
-    let first = number.iter().sum::<usize>().to_string();
+    let first = number.iter().sum::<usize>();
 
     let second = symbol
         .iter()
@@ -97,8 +98,7 @@ pub fn main(input: String) -> (String, String) {
                 None
             }
         })
-        .sum::<usize>()
-        .to_string();
+        .sum::<usize>();
 
-    (first, second)
+    Output(first, second)
 }

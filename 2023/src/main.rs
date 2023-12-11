@@ -1,13 +1,34 @@
+// mod day10;
+
 use aoc::generate_days;
+use std::fmt::Display;
 use std::iter::Iterator;
 use std::{env, fs};
 
-fn run<F: Fn(String) -> (String, String)>(idx: &str, func: F) {
+struct Input(String);
+
+impl From<String> for Input {
+    fn from(value: String) -> Self {
+        Self(fs::read_to_string(value).unwrap())
+    }
+}
+
+impl Input {
+    fn lines(&self) -> impl Iterator<Item = &str> {
+        let mut l = self.0.split('\n');
+        l.next_back();
+        l
+    }
+}
+
+struct Output<T: Display, U: Display>(T, U);
+
+fn run<F: Fn(Input) -> Output<T, U>, T: Display, U: Display>(idx: &str, func: F) {
     use std::time::Instant;
 
     println!("Running {}::main:", idx);
 
-    let input = fs::read_to_string(format!("inputs/{idx}")).unwrap();
+    let input: Input = format!("inputs/{idx}").into();
     let start = Instant::now();
     let res = func(input);
     let elapsed = start.elapsed();
