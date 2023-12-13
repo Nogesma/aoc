@@ -1,4 +1,5 @@
 use crate::{Input, Output};
+use std::hint::unreachable_unchecked;
 
 fn find(line: &[u8], range: impl Iterator<Item = usize>) -> u8 {
     for i in range {
@@ -18,7 +19,7 @@ fn find(line: &[u8], range: impl Iterator<Item = usize>) -> u8 {
             _ => (),
         }
     }
-    panic!("No number in line: {}", std::str::from_utf8(line).unwrap());
+    unsafe { unreachable_unchecked() }
 }
 
 pub fn main(input: Input) -> Output<usize, usize> {

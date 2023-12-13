@@ -1,4 +1,5 @@
 use crate::{Input, Output};
+use std::hint::unreachable_unchecked;
 
 type Seeds = Vec<usize>;
 type Map = Vec<(usize, usize, usize)>;
@@ -27,7 +28,7 @@ fn parse_input(input: Input) -> (Seeds, Vec<Map>) {
                         .collect::<Vec<_>>()[..]
                     {
                         &[a, b, c] => (a, b, c),
-                        _ => panic!(),
+                        _ => unsafe { unreachable_unchecked() },
                     }
                 })
                 .collect::<Vec<_>>()
@@ -88,10 +89,9 @@ pub fn main(input: Input) -> Output<usize, usize> {
                     }
                     i = i.saturating_add(skip);
                 }
-                min
-            } else {
-                panic!();
+                return min;
             }
+            unsafe { unreachable_unchecked() }
         })
         .min()
         .unwrap();

@@ -2,6 +2,7 @@ use crate::day07::HandType::{
     FiveOfAKind, FourOfAKind, FullHouse, HighCard, OnePair, ThreeOfAKind, TwoPair,
 };
 use crate::{Input, Output};
+use std::hint::unreachable_unchecked;
 
 #[derive(Eq, PartialEq, Ord, PartialOrd)]
 enum HandType {
@@ -113,13 +114,13 @@ pub fn main(input: Input) -> Output<usize, usize> {
             3 => match hand.t {
                 FullHouse => hand.t = FiveOfAKind,
                 ThreeOfAKind => hand.t = FourOfAKind,
-                _ => panic!(),
+                _ => unsafe { unreachable_unchecked() },
             },
             2 => match hand.t {
                 FullHouse => hand.t = FiveOfAKind,
                 TwoPair => hand.t = FourOfAKind,
                 OnePair => hand.t = ThreeOfAKind,
-                _ => panic!(),
+                _ => unsafe { unreachable_unchecked() },
             },
             1 => match hand.t {
                 FourOfAKind => hand.t = FiveOfAKind,
@@ -127,7 +128,7 @@ pub fn main(input: Input) -> Output<usize, usize> {
                 TwoPair => hand.t = FullHouse,
                 OnePair => hand.t = ThreeOfAKind,
                 HighCard => hand.t = OnePair,
-                _ => panic!(),
+                _ => unsafe { unreachable_unchecked() },
             },
             _ => {}
         }
