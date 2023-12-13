@@ -36,10 +36,10 @@ fn run<F: Fn(Input) -> Output<T, U>, T: Display, U: Display>(idx: &str, test: bo
     let elapsed = start.elapsed();
 
     println!("Result: {} - {}", res.0, res.1);
-    println!("Execution time: {:?}", elapsed);
+    println!("Execution time: {:?}\n", elapsed);
 }
 
-generate_days!(8);
+generate_days!(9);
 
 fn main() -> Result<(), String> {
     let idx = env::args().nth(1).ok_or("Missing day argument")?;
