@@ -39,7 +39,7 @@ fn run<F: Fn(Input) -> Output<T, U>, T: Display, U: Display>(idx: &str, test: bo
     println!("Execution time: {:?}\n", elapsed);
 }
 
-generate_days!(13);
+generate_days!(14);
 
 fn main() -> Result<(), String> {
     let idx = env::args().nth(1).ok_or("Missing day argument")?;
